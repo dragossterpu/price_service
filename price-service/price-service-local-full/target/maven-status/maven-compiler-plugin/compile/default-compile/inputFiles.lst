@@ -1,0 +1,9 @@
+C:\Users\adragos\Documents\test\price-service-final-all-correct\price-service-local-full\src\main\java\com\stad\pricing\adapter\in\web\PriceController.java
+C:\Users\adragos\Documents\test\price-service-final-all-correct\price-service-local-full\src\main\java\com\stad\pricing\application\PriceService.java
+C:\Users\adragos\Documents\test\price-service-final-all-correct\price-service-local-full\src\main\java\com\stad\pricing\domain\port\out\PriceRepositoryPort.java
+C:\Users\adragos\Documents\test\price-service-final-all-correct\price-service-local-full\src\main\java\com\stad\pricing\domain\port\in\GetPriceQuery.java
+C:\Users\adragos\Documents\test\price-service-final-all-correct\price-service-local-full\src\main\java\com\stad\pricing\adapter\out\persistence\JdbcPriceRepository.java
+C:\Users\adragos\Documents\test\price-service-final-all-correct\price-service-local-full\src\main\java\com\stad\pricing\domain\model\Price.java
+C:\Users\adragos\Documents\test\price-service-final-all-correct\price-service-local-full\src\main\java\com\stad\pricing\adapter\in\web\PriceResponse.java
+C:\Users\adragos\Documents\test\price-service-final-all-correct\price-service-local-full\src\main\java\com\stad\pricing\PricingApplication.java
+C:\Users\adragos\Documents\test\price-service-final-all-correct\price-service-local-full\src\main\java\com\stad\pricing\adapter\in\web\IndexRedirectController.java

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Consulta de Precios</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 600px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 16px;
+      display: block;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .error {
+      color: #a94442;
+      background: #fdd;
+      padding: 12px;
+      margin-top: 20px;
+      border-radius: 6px;
+      border: 1px solid #a94442;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Consulta de Precios</h1>
+    <form id="priceForm">
+      <label for="brandId">Brand ID:</label>
+      <input type="number" id="brandId" name="brandId" value="1" required />
+
+      <label for="productId">Product ID:</label>
+      <input type="number" id="productId" name="productId" value="35455" required />
+
+      <label for="applicationDate">Fecha y Hora:</label>
+      <input type="datetime-local" id="applicationDate" name="applicationDate" required />
+
+      <button type="submit">Consultar</button>
+    </form>
+
+    <div id="resultContainer"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("priceForm");
+    const resultContainer = document.getElementById("resultContainer");
+    document.getElementById("applicationDate").value = new Date().toISOString().slice(0, 16);
+
+    function formatDate(iso) {
+      const d = new Date(iso);
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const brandId = document.getElementById("brandId").value;
+      const productId = document.getElementById("productId").value;
+      const applicationDate = document.getElementById("applicationDate").value;
+
+      const url = `/api/prices/search?brandId=${brandId}&productId=${productId}&applicationDate=${encodeURIComponent(applicationDate)}`;
+
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("No se encontró precio aplicable.");
+          }
+          return response.json();
+        })
+        .then(data => {
+          resultContainer.innerHTML = `
+            <table>
+              <thead>
+                <tr>
+                  <th>Brand ID</th>
+                  <th>Product ID</th>
+                  <th>Price List</th>
+                  <th>Desde</th>
+                  <th>Hasta</th>
+                  <th>Precio</th>
+                  <th>Moneda</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>${data.brandId}</td>
+                  <td>${data.productId}</td>
+                  <td>${data.priceList}</td>
+                  <td>${formatDate(data.startDate)}</td>
+                  <td>${formatDate(data.endDate)}</td>
+                  <td>${data.price.toFixed(2)}</td>
+                  <td>${data.currency}</td>
+                </tr>
+              </tbody>
+            </table>
+          `;
+        })
+        .catch(error => {
+          resultContainer.innerHTML = `<div class="error">${error.message}</div>`;
+        });
+    });
+  </script>
+</body>
+</html>
